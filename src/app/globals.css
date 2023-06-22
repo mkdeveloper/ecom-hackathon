@@ -2,26 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+@layer base {
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    h1 {
+      @apply lg:text-[3.5rem] md:text-[2.75rem] text-[2rem] font-bold tracking-wider leading-[50px]
+    }
+  
+    h2 {
+      @apply text-[2.75rem] font-bold tracking-[0.03em] leading-10
+    }
+  
+    h3 {
+      @apply lg:text-3xl md:text-[1.125rem] text-[1.05rem] leading-[55px] tracking-[0.03em] font-bold
+    }
+  
+    h4 {
+      @apply text-[1.125rem] leading-5 tracking-[0.03em] font-semibold
+    }
+  
+    h5 {
+      @apply text-[1.05rem] leading-6 tracking-[0.03em] font-semibold
+    }
 }
