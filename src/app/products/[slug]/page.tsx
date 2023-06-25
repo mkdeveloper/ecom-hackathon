@@ -1,8 +1,9 @@
 import Wrapper from "@/components/shared/Wrapper";
 import { client } from "../../../../sanity/lib/client";
 import ImageComponent from "@/components/utils/ImageComponent";
-import AddtoCart from "@/components/shared/AddtoCart";
-import { SanityProducts } from "@/interfaces";
+import AddtoCartProduct from "@/components/shared/addtoCartProduct";
+import { Product } from "@/interfaces";
+import { auth } from "@clerk/nextjs";
 
 type Props = {
   params: {
@@ -25,8 +26,9 @@ const getProduct = async ({ params }: Props) => {
   return res;
 };
 
-const Product = async ({ params }: Props) => {
-  const product: SanityProducts = await getProduct({ params });
+const SingleProduct = async ({ params }: Props) => {
+  const { userId } = auth();
+  const product: Product = await getProduct({ params });
 
   return (
     <Wrapper>
@@ -58,15 +60,18 @@ const Product = async ({ params }: Props) => {
           <h3 className="font-normal mt-10">
             Price: <span className="font-bold">${product.price}.00</span>
           </h3>
-
-          <AddtoCart product={product} />
+          <AddtoCartProduct
+            product={product}
+            qty={1}
+            userId={userId as string}
+          />
         </div>
       </div>
     </Wrapper>
   );
 };
 
-export default Product;
+export default SingleProduct;
 
 // export async function generateStaticParams() {
 //   const query = `*[_type == "product"]{

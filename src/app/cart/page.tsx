@@ -1,28 +1,24 @@
 "use client";
 import CartItemCard from "@/components/shared/CartItemCard";
 import Wrapper from "@/components/shared/Wrapper";
-import {
-  totalCartItemSelector,
-  totalPriceSelector,
-} from "@/redux/features/cartSlice";
 import { useAppSelector } from "@/redux/store";
 import Link from "next/link";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BiShoppingBag } from "react-icons/bi";
 
 const CartPage = () => {
-  const cartItems = useAppSelector((state) => state.cart.cartItems);
-  const totalItems = useAppSelector(totalCartItemSelector);
-  const totalPrice = useAppSelector(totalPriceSelector);
-
-  console.log(cartItems);
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const totalItems = useAppSelector((state) => state.cart.totalQuantity);
+  const totalPrice = useAppSelector((state) => state.cart.totalAmount);
 
   if (cartItems.length > 0) {
     return (
       <Wrapper>
+        <h3>Shopping Cart</h3>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-x-5 px-5">
           <div className="basis-3/4">
             {cartItems.map((elm) => (
-              <CartItemCard key={elm.product._id} cartItem={elm} />
+              <CartItemCard key={elm._id} cartItem={elm} />
             ))}
           </div>
           <div className="basis-1/4 bg-gray-200 rounded-md w-full h-full  mt-5 sm:mt-0 p-2 self-start">
@@ -52,8 +48,11 @@ const CartPage = () => {
   } else {
     return (
       <Wrapper>
+        <h3>Shopping Cart</h3>
+
         <div className="flex flex-col w-full gap-10 h-full justify-center items-center">
-          <h1>Cart is Empty</h1>
+          <BiShoppingBag size={200} />
+          <h1>Your shopping bag is empty</h1>
           <Link
             href="/products"
             className="flex justify-center items-center gap-3 border border-gray-300 rounded-sm bg-[#212121] text-white py-2 px-3"

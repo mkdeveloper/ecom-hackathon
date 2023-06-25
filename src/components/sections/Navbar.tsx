@@ -10,23 +10,25 @@ import Link from "next/link";
 import Menu from "../shared/Menu";
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { fetchData, totalCartItemSelector } from "@/redux/features/cartSlice";
+import { fetchData } from "@/redux/features/cartSlice";
 import { UserButton } from "@clerk/nextjs";
-
 const Navbar = ({ userId }: { userId: string }) => {
-  const [nav, setNav] = useState(false);
-  const totalItems = useAppSelector(totalCartItemSelector);
   const dispatch = useAppDispatch();
 
-  const totalI = totalItems ? totalItems : 0;
+  if (userId) {
+    useEffect(() => {
+      dispatch(fetchData(userId)); // Dispatch the fetchData action with the user id
+    }, [dispatch, userId]);
+  }
+
+  const [nav, setNav] = useState(false);
+  const totalItems = useAppSelector((state) => state.cart.totalQuantity);
+
+  // const totalI = totalItems ? totalItems : 0;
 
   const handleNav = () => {
     setNav(!nav);
   };
-
-  useEffect(() => {
-    dispatch(fetchData(userId)); // Dispatch the fetchData action with the user id
-  }, [dispatch, userId]);
 
   return (
     <nav>
@@ -54,7 +56,7 @@ const Navbar = ({ userId }: { userId: string }) => {
             <div className="w-10 h-10 rounded-full bg-[#f1f1f1] flex justify-center items-center relative">
               <AiOutlineShoppingCart size={25} />
               <span className="absolute left-7 bottom-7 w-5 h-5 bg-[#f02d34] text-white text-xs rounded-full flex justify-center items-center">
-                {totalI}
+                {totalItems}
               </span>
             </div>
           </Link>
@@ -89,7 +91,7 @@ const Navbar = ({ userId }: { userId: string }) => {
               <AiOutlineShoppingCart />
 
               <span className="absolute bottom-8 left-7 w-5 h-5 bg-[#f02d34] text-white text-xs rounded-full flex justify-center items-center">
-                {totalI}
+                {totalItems}
               </span>
             </div>
           </Link>

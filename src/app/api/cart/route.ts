@@ -1,22 +1,13 @@
-import { cartTable, db } from "@/lib/drizzle";
+import { addToCart, cartTable, db } from "@/lib/drizzle";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 
-type IReqProps = {
-  id: number;
-  product_id: string;
-  product_name: string;
-  subcat: string;
-  image: string;
-  price: number;
-  quantity: number;
-};
 
 export const POST = async (request: NextRequest) => {
   const { userId } = auth();
 
-  const req: IReqProps = await request.json();
+  const req: addToCart = await request.json();
 
   try {
     if (req) {
@@ -30,6 +21,7 @@ export const POST = async (request: NextRequest) => {
           price: req.price,
           product_name: req.product_name,
           subcat: req.subcat,
+          total_price: req.price * req.quantity,
         })
         .returning();
       return NextResponse.json({ res });
@@ -47,7 +39,7 @@ export const POST = async (request: NextRequest) => {
 export const PUT = async (request: NextRequest) => {
   const { userId } = auth();
 
-  const req: IReqProps = await request.json();
+  const req: addToCart = await request.json();
 
   try {
     if (req) {
@@ -55,7 +47,7 @@ export const PUT = async (request: NextRequest) => {
         .update(cartTable)
         .set({
           quantity: req.quantity,
-          price: req.price,
+          total_price: req.price,
         })
         .where(
           eq(cartTable.user_id, userId as string) &&
