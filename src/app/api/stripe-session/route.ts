@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { auth } from "@clerk/nextjs";
 
 const key = process.env.STRIPE_SECRET_KEY || "";
 
@@ -8,9 +9,19 @@ const stripe = new Stripe(key, {
 });
 
 export async function POST(request: NextRequest) {
+  const {userId} = auth();
+
   const body = await request.json();
+  console.log(body);
+  const customer = await stripe.customers.create({
+    metadata: {
+      userId: userId,
+    },
+  })
+
   try {
-    if (body.length > 0) {
+    if (body.length > 0 && userId) {
+
       const session = await stripe.checkout.sessions.create({
         submit_type: "pay",
         mode: "payment",
@@ -23,12 +34,15 @@ export async function POST(request: NextRequest) {
         invoice_creation: {
           enabled: true,
         },
+        
         line_items: body.map((item: any) => {
+
           return {
             price_data: {
               currency: "usd",
               product_data: {
                 name: item.name,
+                images: [item.image],
               },
               unit_amount: item.price * 100,
             },
@@ -40,6 +54,7 @@ export async function POST(request: NextRequest) {
             },
           };
         }),
+        customer:customer.id,
         phone_number_collection: {
           enabled: true,
         },

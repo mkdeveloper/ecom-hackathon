@@ -6,6 +6,7 @@ import { BiShoppingBag } from "react-icons/bi";
 import { selectIsLoading } from "@/redux/features/cartSlice";
 import StripeCheckOutButton from "@/components/sections/CheckOut";
 import StartShopping from "@/components/shared/StartShopping";
+import { Toaster, toast } from "react-hot-toast";
 
 const CartDataLoadingFromApi = () => {
   return (
@@ -51,12 +52,13 @@ const LoadedCartData = () => {
                   <p>${totalPrice}</p>
                 </div>
               </div>
-              <div className="" onClick={() => console.log("added")}>
+              <div>
                 <StripeCheckOutButton products={cartItems} />
               </div>
             </div>
           </div>
         </div>
+        <Toaster />
       </Wrapper>
     );
   } else {
