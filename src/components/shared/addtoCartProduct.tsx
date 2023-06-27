@@ -64,14 +64,17 @@ const AddtoCartProduct = (props: IProps) => {
       if (existingItem) {
         const newQuantity = existingItem.quantity + qty;
         const newPrice = props.product.price * newQuantity;
-        const res = await fetch(`http://localhost:3000/api/cart`, {
-          method: "PUT",
-          body: JSON.stringify({
-            product_id: props.product._id,
-            quantity: newQuantity,
-            price: newPrice,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/cart`,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              product_id: props.product._id,
+              quantity: newQuantity,
+              price: newPrice,
+            }),
+          }
+        );
 
         if (!res.ok) {
           throw new Error("Failed to update data");

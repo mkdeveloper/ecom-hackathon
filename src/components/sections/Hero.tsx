@@ -1,6 +1,6 @@
 import Wrapper from "../shared/Wrapper";
 import Image from "next/image";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import StartShopping from "../shared/StartShopping";
 
 const Hero = () => {
   return (
@@ -15,10 +15,7 @@ const Hero = () => {
             Anyone can beat you but no one can beat your outfit as long as you
             wear Dine outfits.
           </p>
-          <button className="flex items-center bg-[#212121] text-white rounded-none py-3 px-8">
-            <AiOutlineShoppingCart className="mr-2" size={25} />
-            Start Shopping
-          </button>
+          <StartShopping />
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-10 gap-y-5">
             <div>
               <Image

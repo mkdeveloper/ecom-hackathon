@@ -2,11 +2,10 @@
 import CartItemCard from "@/components/shared/CartItemCard";
 import Wrapper from "@/components/shared/Wrapper";
 import { useAppSelector } from "@/redux/store";
-import Link from "next/link";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiShoppingBag } from "react-icons/bi";
 import { selectIsLoading } from "@/redux/features/cartSlice";
 import StripeCheckOutButton from "@/components/sections/CheckOut";
+import StartShopping from "@/components/shared/StartShopping";
 
 const CartDataLoadingFromApi = () => {
   return (
@@ -68,12 +67,7 @@ const LoadedCartData = () => {
         <div className="flex flex-col w-full gap-10 h-full justify-center items-center">
           <BiShoppingBag size={200} />
           <h1>Your shopping bag is empty</h1>
-          <Link
-            href="/products"
-            className="flex justify-center items-center gap-3 border border-gray-200 rounded-sm bg-[#212121] text-white py-2 px-3"
-          >
-            <AiOutlineShoppingCart size={25} /> Start Shopping
-          </Link>
+          <StartShopping />
         </div>
       </Wrapper>
     );

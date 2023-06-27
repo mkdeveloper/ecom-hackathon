@@ -20,14 +20,17 @@ const CartItemCard = ({ cartItem }: Props) => {
 
     try {
       if (newQty) {
-        const res = await fetch(`http://localhost:3000/api/cart`, {
-          method: "PUT",
-          body: JSON.stringify({
-            product_id: cartItem._id,
-            quantity: newQty,
-            price: newPrice,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/cart`,
+          {
+            method: "PUT",
+            body: JSON.stringify({
+              product_id: cartItem._id,
+              quantity: newQty,
+              price: newPrice,
+            }),
+          }
+        );
         if (!res.ok) {
           throw new Error("Failed to update data");
         }
