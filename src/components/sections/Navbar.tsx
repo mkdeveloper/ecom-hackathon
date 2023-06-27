@@ -15,11 +15,15 @@ import { UserButton } from "@clerk/nextjs";
 const Navbar = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
 
-  if (userId) {
-    useEffect(() => {
-      dispatch(fetchData(userId)); // Dispatch the fetchData action with the user id
-    }, [dispatch, userId]);
-  }
+  // if (userId) {
+  //   useEffect(() => {
+  //     dispatch(fetchData(userId)); // Dispatch the fetchData action with the user id
+  //   }, [dispatch, userId]);
+  // }
+
+  useEffect(() => {
+    dispatch(fetchData(userId)); // Dispatch the fetchData action with the user id
+  }, [dispatch, userId]);
 
   const [nav, setNav] = useState(false);
   const totalItems = useAppSelector((state) => state.cart.totalQuantity);

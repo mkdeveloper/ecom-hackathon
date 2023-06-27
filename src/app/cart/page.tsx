@@ -5,8 +5,20 @@ import { useAppSelector } from "@/redux/store";
 import Link from "next/link";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiShoppingBag } from "react-icons/bi";
+import { selectIsLoading } from "@/redux/features/cartSlice";
+import StripeCheckOutButton from "@/components/sections/CheckOut";
 
-const CartPage = () => {
+const CartDataLoadingFromApi = () => {
+  return (
+    <Wrapper>
+      <div className="flex justify-center items-center w-full h-40">
+        <h1>Loading Data</h1>
+      </div>
+    </Wrapper>
+  );
+};
+
+const LoadedCartData = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
   const totalItems = useAppSelector((state) => state.cart.totalQuantity);
   const totalPrice = useAppSelector((state) => state.cart.totalAmount);
@@ -40,6 +52,9 @@ const CartPage = () => {
                   <p>${totalPrice}</p>
                 </div>
               </div>
+              <div className="" onClick={() => console.log("added")}>
+                <StripeCheckOutButton products={cartItems} />
+              </div>
             </div>
           </div>
         </div>
@@ -55,7 +70,7 @@ const CartPage = () => {
           <h1>Your shopping bag is empty</h1>
           <Link
             href="/products"
-            className="flex justify-center items-center gap-3 border border-gray-300 rounded-sm bg-[#212121] text-white py-2 px-3"
+            className="flex justify-center items-center gap-3 border border-gray-200 rounded-sm bg-[#212121] text-white py-2 px-3"
           >
             <AiOutlineShoppingCart size={25} /> Start Shopping
           </Link>
@@ -63,6 +78,12 @@ const CartPage = () => {
       </Wrapper>
     );
   }
+};
+
+const CartPage = () => {
+  const isLoading = useAppSelector(selectIsLoading);
+
+  return <>{isLoading ? <CartDataLoadingFromApi /> : <LoadedCartData />}</>;
 };
 
 export default CartPage;

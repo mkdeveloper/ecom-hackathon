@@ -1,6 +1,8 @@
 import { Product } from "@/interfaces";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
+import { urlForImage } from "../../../sanity/lib/image";
 
 interface CartState {
   items: Array<Product>;
@@ -53,6 +55,8 @@ export const cartSlice = createSlice({
         const totalPrice = newItem.price * action.payload.quantity;
         state.items.push({
           ...newItem,
+          // @ts-ignore
+          image: urlForImage(newItem.image[0]).url(),
           quantity: action.payload.quantity,
           totalPrice,
         });
@@ -119,7 +123,8 @@ export const cartSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
+export const selectIsLoading = (state: RootState) => state.cart.isLoading;
+
 export const cartActions = cartSlice.actions;
 
 export default cartSlice.reducer;

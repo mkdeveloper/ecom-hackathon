@@ -2,7 +2,7 @@ import Wrapper from "@/components/shared/Wrapper";
 import { client } from "../../../../sanity/lib/client";
 import ImageComponent from "@/components/utils/ImageComponent";
 import AddtoCartProduct from "@/components/shared/addtoCartProduct";
-import { Product } from "@/interfaces";
+import { Product, SanityProducts } from "@/interfaces";
 import { auth } from "@clerk/nextjs";
 
 type Props = {
@@ -11,7 +11,6 @@ type Props = {
   };
 };
 
-// fetching data from sanity
 const getProduct = async ({ params }: Props) => {
   const query = `*[_type == "product" && slug.current == "${params.slug}"][0]{
     _id,
@@ -73,15 +72,15 @@ const SingleProduct = async ({ params }: Props) => {
 
 export default SingleProduct;
 
-// export async function generateStaticParams() {
-//   const query = `*[_type == "product"]{
-//     slug {
-//       current
-//     }
-//   }`;
-//   const res: SanityProducts[] = await client.fetch(query);
+export async function generateStaticParams() {
+  const query = `*[_type == "product"]{
+    slug {
+      current
+    }
+  }`;
+  const res: SanityProducts[] = await client.fetch(query);
 
-//   return res.map((product) => ({
-//     slug: product.slug.current,
-//   }));
-// }
+  return res.map((product) => ({
+    slug: product.slug.current,
+  }));
+}

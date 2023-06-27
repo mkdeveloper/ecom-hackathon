@@ -74,15 +74,15 @@ type ICategory = {
   };
 };
 
-// export async function generateStaticParams() {
-//   const query = `*[_type == "category"] {
-//       slug {
-//       current
-//       }
-//   }`;
-//   const res: ICategory[] = await client.fetch(query);
+export async function generateStaticParams() {
+  const query = `*[_type == "category"] {
+      slug {
+      current
+      }
+  }`;
+  const res: ICategory[] = await client.fetch(query);
 
-//   return res.map((category) => ({
-//     slug: category.slug.current,
-//   }));
-// }
+  return res.map((category) => ({
+    slug: category.slug.current,
+  }));
+}

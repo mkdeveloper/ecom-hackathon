@@ -50,14 +50,11 @@ const AddtoCartProduct = (props: IProps) => {
 
     if (!res.ok) {
       throw new Error("Failed to add Data");
-    } else {
-      toast.success("Product added to Cart");
     }
   };
 
   const handleCart = async () => {
     setIsLoading(true);
-    console.log("Loading State after Clicked: " + isLoading);
     try {
       const cartData = await handleRequestData();
       const existingItem = cartData.cartItems.find(
@@ -78,21 +75,23 @@ const AddtoCartProduct = (props: IProps) => {
 
         if (!res.ok) {
           throw new Error("Failed to update data");
-        } else {
-          toast.success("Product Quantity Increased");
         }
       } else {
-        handleAddToCart();
+        await handleAddToCart();
       }
     } catch (error) {
       console.log((error as { message: string }).message);
     }
+
     setIsLoading(false);
-    console.log("Loading State after fetch complete: " + isLoading);
   };
 
   const addtoCart = () => {
-    handleCart();
+    toast.promise(handleCart(), {
+      loading: "Adding To Cart",
+      success: "Product added To Cart",
+      error: "Failed to Add Product to cart",
+    });
     dispatch(cartActions.addToCart({ product: props.product, quantity: qty }));
   };
   return (
