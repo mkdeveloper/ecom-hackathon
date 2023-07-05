@@ -1,7 +1,7 @@
 import { addToCart, cartTable, db } from "@/lib/drizzle";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 
 export const POST = async (request: NextRequest) => {
@@ -49,11 +49,7 @@ export const PUT = async (request: NextRequest) => {
           quantity: req.quantity,
           total_price: req.price,
         })
-        .where(
-          eq(cartTable.user_id, userId as string) &&
-            eq(cartTable.product_id, req.product_id)
-        )
-        .returning();
+        .where(and(eq(cartTable.user_id, userId as string), eq(cartTable.product_id, req.product_id))).returning();
       return NextResponse.json({ res });
     } else {
       throw new Error("Failed to update Data");

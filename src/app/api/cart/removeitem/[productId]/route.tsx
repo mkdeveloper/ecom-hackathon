@@ -1,5 +1,5 @@
 import { cartTable, db } from "@/lib/drizzle";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
@@ -12,7 +12,12 @@ export const DELETE = async (
     if (productId && userId) {
       const res = await db
         .delete(cartTable)
-        .where(eq(cartTable.product_id, productId))
+        .where(
+          and(
+            eq(cartTable.user_id, userId as string),
+            eq(cartTable.product_id, productId)
+          )
+        )
         .returning();
       return NextResponse.json({
         Message: "Item removed from Cart",
