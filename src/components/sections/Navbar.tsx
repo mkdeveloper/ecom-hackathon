@@ -14,6 +14,7 @@ import { fetchData } from "@/redux/features/cartSlice";
 import { UserButton } from "@clerk/nextjs";
 const Navbar = ({ userId }: { userId: string }) => {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchData(userId)); // Dispatch the fetchData action with the user id
   }, [dispatch, userId]);
@@ -48,7 +49,7 @@ const Navbar = ({ userId }: { userId: string }) => {
           />
         </div>
         <div className="hidden lg:flex items-center justify-between gap-2">
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
           <Link href={"/cart"} onClick={handleNav}>
             <div className="w-10 h-10 rounded-full bg-[#f1f1f1] flex justify-center items-center relative">
               <AiOutlineShoppingCart size={25} />
@@ -82,7 +83,7 @@ const Navbar = ({ userId }: { userId: string }) => {
           </div>
         </div>
         <div className="mt-28 flex flex-col items-center justify-center gap-5">
-          <UserButton />
+          <UserButton afterSignOutUrl="/" />
           <Link href={"/cart"} onClick={handleNav}>
             <div className="w-12 h-12 rounded-full bg-[#f1f1f1] flex justify-center items-center relative">
               <AiOutlineShoppingCart />
